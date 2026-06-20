@@ -1,19 +1,19 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-from backend import settings
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 
 
 class RefreshTokenView(APIView):
     def post(self, request):
         try:
-            refresh_token = request.data['refresh_token']
+            refresh_token = request.COOKIES.get('refresh_token')
             if not refresh_token:
                 return Response({
                     'result':'Refresh Token 不存在',
                 }, status=401)
-            refresh=RefreshTokenView(refresh_token)#如果refresh token过期了/不合法会报异常
-            if settings.SIMPLE_JWT['ROTATE_REFRESH_TOKEN']:
+            refresh=RefreshToken(refresh_token)#如果refresh token过期了/不合法会报异常
+            if settings.SIMPLE_JWT['ROTATE_REFRESH_TOKENS']:
                 refresh.set_jti()#刷新为有效
                 response = Response({
                     'result': 'success',
