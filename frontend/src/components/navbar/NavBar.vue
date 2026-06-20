@@ -28,7 +28,7 @@ import Searchicon from "@/components/navbar/icons/Searchicon.vue";
           </div>
         </div>
         <div class="navbar-end">
-          <RouterLink :to="{name: 'user-account-login-index'}" active-class="btn-focus" class="btn btn-ghost text-lg" >
+          <RouterLink :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg" >
           登录
           </RouterLink>
         </div>
