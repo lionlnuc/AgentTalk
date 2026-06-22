@@ -6,9 +6,9 @@ from django.utils.timezone import now, localtime
 
 
 def photo_upload_to(instance, filename):
-    ext = filename.split('.')[-1]#取文件扩展名，-1取最后一段
-    filename = f'{uuid.uuid4().hex[:10]}.{ext}'#去随机字符串的十六进制前十位
-    return f'user/photos/{instance.userid}_{filename}'##图片对应userid
+    ext = filename.split('.')[-1]  # 取文件扩展名，-1取最后一段
+    filename = f'{uuid.uuid4().hex[:10]}.{ext}'  # 取随机字符串的十六进制前十位
+    return f'user/photos/{instance.user_id}_{filename}'  # 图片对应user_id
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)#一一对应的表 绑定
