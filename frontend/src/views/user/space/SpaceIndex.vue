@@ -4,8 +4,7 @@ import UserInfoField from "@/views/user/space/components/UserInfoField.vue";
 import {nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch} from "vue";
 import {useRoute} from "vue-router";
 import api from "@/js/http/api.js";
-import Character from "@/views/user/space/components/Character.vue";
-
+import Character from "@/components/character/Character.vue";
 const userProfile = ref(null)
 const characters = ref([])
 const isLoading = ref(false) //判断当前是否有角色在加载

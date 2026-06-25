@@ -1,3 +1,4 @@
+from django.core.handlers import exception
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,7 +10,7 @@ from web.views.utils.photo import remove_old_photo
 
 class UpdateCharacterView(APIView):
     permission_classes=[IsAuthenticated]
-    def put(self,request):
+    def post(self,request):
         try:
             character_id = request.data['character_id']
             character = Character.objects.get(id=character_id, author__user=request.user)
@@ -31,13 +32,13 @@ class UpdateCharacterView(APIView):
             if background_image:
                 remove_old_photo(character.background_image)
                 character.background_image = background_image
-                character.name = name
-                character.profile = profile
-                character.update_time = now()
-                character.save()
-                return Response({
-                    'result': 'success',
-                })
+            character.name = name
+            character.profile = profile
+            character.update_time = now()
+            character.save()
+            return Response({
+                'result': 'success',
+            })
 
         except:
             return Response({
