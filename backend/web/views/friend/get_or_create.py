@@ -27,8 +27,6 @@ class GetOrCreateView(APIView):
                 'result':'success',
                 'friend':{
                     'id':friend.id,
-                    'character':{
-                        'id':friend.id,
                         'character':{
                             'id':character.id,
                             'name':character.name,
@@ -41,7 +39,6 @@ class GetOrCreateView(APIView):
                                 'photo':author.photo.url,
                             }
                         }
-                    }
                 }
             })
         except:
