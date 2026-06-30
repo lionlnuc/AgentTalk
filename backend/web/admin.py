@@ -1,7 +1,10 @@
 from django.contrib import admin
+from langchain_protocol import MessageRole
+
 from web.models.user import UserProfile
 from web.models.character import Character
 from web.models.friend import Friend
+from web.models.friend import Message
 # Register your models here.
 
 @admin.register(UserProfile)
@@ -14,3 +17,7 @@ class CharacterAdmin(admin.ModelAdmin):
 @admin.register(Friend)
 class FriendAdmin(admin.ModelAdmin):
     raw_id_fields = ('me','character',)
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    raw_id_fields = ('friend',)
