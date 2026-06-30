@@ -63,7 +63,7 @@ class MessageChatView(APIView):
 
         inputs = add_system_prompt(inputs, friend)
         inputs = add_recent_messages(inputs, friend)
-        
+
         def event_stream():
             full_output = ''
             full_usage = {}
