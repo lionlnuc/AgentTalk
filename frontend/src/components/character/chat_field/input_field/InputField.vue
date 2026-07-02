@@ -4,8 +4,7 @@ import MicIcon from "@/components/character/icons/MicIcon.vue";
 import {ref, useTemplateRef} from "vue";
 import streamApi from "@/js/http/streamApi.js";
 import Microphone from "@/components/character/chat_field/input_field/Microphone.vue";
-import audio_msg
-  from "../../../../../../.venv/Lib/site-packages/django/contrib/admin/static/admin/js/vendor/xregexp/xregexp.js";
+//import audio_msg from "../../../../../../.venv/Lib/site-packages/django/contrib/admin/static/admin/js/vendor/xregexp/xregexp.js";
 
 const props = defineProps(['friendId'])
 const emit = defineEmits(['pushBackMessage', 'addToLastMessage'])
