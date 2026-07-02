@@ -43,8 +43,8 @@ async function handleUpdate(){
       }
 
     }catch (err) {
-      print(e)
-      console.log(err)
+
+
     }
   }
 
