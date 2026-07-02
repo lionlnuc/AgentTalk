@@ -9,10 +9,18 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+
+
+
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
-from pathlib import Path
+
+
+import mimetypes
+mimetypes.add_type("application/javascript", ".mjs", True)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +35,8 @@ SECRET_KEY = "django-insecure-pr4uc%jlnv=tc@cpt(m9liti+n_qs$b!e2=%&-44r-(xqr(l1i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['127.0.0.1','app8088.acapp.acwing.com.cn']
 
 
 # Application definition
@@ -122,11 +131,20 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
-MEDIA_URL = 'http://127.0.0.1:8000/media/'
+if not DEBUG:
+    STATIC_ROOT = BASE_DIR / 'static'  # 生产阶段使用
+else:
+    STATICFILES_DIRS = [  # 开发阶段使用，生产阶段需要注释掉
+        BASE_DIR / 'static',
+    ]
+
+if DEBUG:
+    MEDIA_URL = 'http://127.0.0.1:8000/media/'
+else:
+    MEDIA_URL = 'https://app8088.acapp.acwing.com.cn/media/'
+
+
 MEDIA_ROOT = BASE_DIR / 'media'
 
 from datetime import  timedelta
