@@ -186,13 +186,15 @@ class MessageChatView(APIView):
             if msg.get('usage', None):
                 full_usage = msg['usage']
 
-        for msg, metadata in app.stream(inputs, stream_mode="messages"):
-            if isinstance(msg, BaseMessageChunk):
-                if msg.content:
-                    full_output += msg.content
-                    yield f'data: {json.dumps({'content': msg.content}, ensure_ascii=False)}\n\n'
-                if hasattr(msg, 'usage_metadata') and msg.usage_metadata:
-                    full_usage = msg.usage_metadata
+        # TTS 线程内 astream 已推送全文；仅在线程异常、无文字产出时补跑 LLM
+        if not full_output.strip():
+            for msg, metadata in app.stream(inputs, stream_mode="messages"):
+                if isinstance(msg, BaseMessageChunk):
+                    if msg.content:
+                        full_output += msg.content
+                        yield f'data: {json.dumps({'content': msg.content}, ensure_ascii=False)}\n\n'
+                    if hasattr(msg, 'usage_metadata') and msg.usage_metadata:
+                        full_usage = msg.usage_metadata
         yield 'data: [DONE]\n\n'
         input_tokens = full_usage.get('input_tokens', 0)
         output_tokens = full_usage.get('output_tokens', 0)
