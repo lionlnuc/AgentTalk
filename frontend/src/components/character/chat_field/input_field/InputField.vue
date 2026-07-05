@@ -1,12 +1,12 @@
 <script setup>
 import SendIcon from "@/components/character/icons/SendIcon.vue";
 import MicIcon from "@/components/character/icons/MicIcon.vue";
-import {onUnmounted, ref, useTemplateRef} from "vue";
+import {onUnmounted, ref, useTemplateRef, watch} from "vue";
 import streamApi from "@/js/http/streamApi.js";
 import Microphone from "@/components/character/chat_field/input_field/Microphone.vue";
 //import audio_msg from "../../../../../../.venv/Lib/site-packages/django/contrib/admin/static/admin/js/vendor/xregexp/xregexp.js";
 
-const props = defineProps(['friendId'])
+const props = defineProps(['friendId', 'playVoice'])
 const emit = defineEmits(['pushBackMessage', 'addToLastMessage'])
 const inputRef = useTemplateRef('input-ref')
 const message = ref('')
@@ -82,6 +82,11 @@ const stopAudio = () => {
         audioPlayer.src = '';
     }
 };
+watch(() => props.playVoice, newVal => {
+  if (!newVal) {
+    stopAudio()
+  }
+})
 
 const handleAudioChunk = (base64Data) => {  // 将语音片段添加到播放器队列中
     try {
@@ -124,7 +129,11 @@ async function handleSend(event, audio_msg) {
 
   if (!content) return
 
-  initAudioStream()
+  if (props.playVoice) {
+    initAudioStream()
+  } else {
+    stopAudio()
+  }
 
   const curId = ++ processId
   message.value = ''
@@ -142,10 +151,13 @@ async function handleSend(event, audio_msg) {
       },
       onmessage(data, isDone) {
         if (curId !== processId) return
+        if (isDone) {
+          return
+        }
         if (data.content) {
           emit('addToLastMessage', data.content)
         }
-        if (data.audio) {
+        if (data.audio && props.playVoice) {
           handleAudioChunk(data.audio)
         }
       },

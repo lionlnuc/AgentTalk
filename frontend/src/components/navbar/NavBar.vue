@@ -50,10 +50,9 @@ function handlesearch(){
           </form>
         </div>
         <div class="navbar-end">
-          <RouterLink v-if="user.isLogin()":to="{name:'create-index'} " active-class="btn-active" class="btn btn-ghost text-base mr-6">
-            <Createicon>
-              创作
-            </Createicon>
+          <RouterLink v-if="user.isLogin()" :to="{name:'create-index'}" active-class="btn-active" class="btn btn-ghost text-base mr-6 gap-1.5">
+            <Createicon/>
+            <span>创作</span>
           </RouterLink>
           <RouterLink v-if="user.hasPulledUserInfo&&!user.isLogin()":to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg" >
           登录

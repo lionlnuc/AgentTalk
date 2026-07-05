@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework.response import Response #API 响应
 from rest_framework.views import APIView#API 视图框架
 
@@ -17,6 +18,8 @@ class GetListCharacterView(APIView):
             characters_raw=Character.objects.filter(
                 author=user_profile,
 
+            ).annotate(
+                friend_count=Count('friend'),
             ).order_by('-id')[items_count:items_count + 20]#按照id正序排序，-id为逆向；并返回前20个元素
             characters=[]
 
@@ -28,6 +31,8 @@ class GetListCharacterView(APIView):
                     'profile': character.profile,
                     'photo': character.photo.url,
                     'background_image': character.background_image.url,
+                    'voice': character.voice,
+                    'friend_count': character.friend_count,
                     'author':{
                         'user_id': author.user.id,
                         'username': author.user.username,

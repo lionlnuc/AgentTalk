@@ -21,6 +21,7 @@ class GetSingleCharacterView(APIView):
                     'profile': character.profile,
                     'photo': character.photo.url,
                     'background_image': character.background_image.url,
+                    'voice': character.voice,
                 },
             })
         except:

@@ -21,6 +21,7 @@ class Character(models.Model):
     photo=models.ImageField(upload_to='characters/photo')
     profile=models.TextField(max_length=10000)
     background_image=models.ImageField(upload_to=photo_upload_to)
+    voice = models.CharField(max_length=50, default='longanyang')
     create_time=models.DateTimeField(default=now)
     update_time = models.DateTimeField(default=now)
     def __str__(self):

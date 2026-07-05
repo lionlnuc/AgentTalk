@@ -33,6 +33,7 @@ class GetOrCreateView(APIView):
                             'profile':character.profile,
                             'photo':character.photo.url,
                             'background_image':character.background_image.url,
+                            'voice': character.voice,
                             'author':{
                                 'user_id':author.id,
                                 'username':author.user.username,

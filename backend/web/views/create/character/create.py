@@ -9,7 +9,14 @@ from web.models.character import Character
 from web.models.user import UserProfile
 
 
-
+ALLOWED_VOICES = {
+    'longanyang',
+    'longanhuan_v3',
+    'longhuhu_v3',
+    'longlaotie_v3',
+    'longxiu_v3',
+    'longhao_v3',
+}
 
 class CreateCharacterView(APIView):
     permission_classes = [IsAuthenticated]
@@ -21,7 +28,7 @@ class CreateCharacterView(APIView):
             profile=request.data.get('profile').strip()[:100000]
             photo=request.FILES.get('photo',None)
             background_image = request.FILES.get('background_image', None)
-
+            voice = request.data.get('voice', 'longanyang')
             if not name:
                 return Response({
                     'result': '名字不能为空'
@@ -49,6 +56,7 @@ class CreateCharacterView(APIView):
                 profile=profile,
                 photo=photo,
                 background_image=background_image,
+                voice=voice,
             )
             return Response({
                 'result': 'success',

@@ -4,23 +4,27 @@ import InputField from "@/components/character/chat_field/input_field/InputField
 import CharacterPhotoField from "@/components/character/chat_field/character_photo_field/CharacterPhotoField.vue";
 import ChatHistory from "@/components/character/chat_field/chat_history/ChatHistory.vue";
 
-const props = defineProps(['friend'])
 const modalRef = useTemplateRef('modal-ref')
 const inputRef = useTemplateRef('input-ref')
 const chatHistoryRef = useTemplateRef('chat-history-ref')
+const friend = ref(null)
 const history = ref([])
+const playVoice = ref(true)
 const emit=defineEmits(['pushBackMessage','addToLastMessage'])
-async function showModal() {
+async function showModal(friendData) {
+  friend.value = friendData
+  history.value = []
+  playVoice.value = true
   modalRef.value.showModal()
 
   await nextTick()
-  inputRef.value.focus()
+  inputRef.value?.focus()
 }
 
 const modalStyle = computed(() => {
-  if (props.friend) {
+  if (friend.value) {
     return {
-      backgroundImage: `url(${props.friend.character.background_image})`,
+      backgroundImage: `url(${friend.value.character.background_image})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -44,8 +48,7 @@ function handlePushFrontMessage(msg) {
   history.value.unshift(msg)
 }
 function handleClose() {
-
-  inputRef.value.close()
+  inputRef.value?.close()
 }
 defineExpose({
   showModal,
@@ -65,6 +68,7 @@ defineExpose({
           @pushFrontMessage="handlePushFrontMessage"
       />
       <InputField
+          :playVoice="playVoice"
           v-if="friend"
           ref="input-ref"
           :friendId="friend.id"
@@ -72,7 +76,12 @@ defineExpose({
           @addToLastMessage="handleAddToLastMessage"
       />
 
-      <CharacterPhotoField v-if="friend" :character="friend.character" />
+      <CharacterPhotoField
+          v-if="friend"
+          :playVoice="playVoice"
+          :character="friend.character"
+          @togglePlayVoice="playVoice = !playVoice"
+      />
     </div>
   </dialog>
 </template>

@@ -3,6 +3,7 @@
 import Photo from "@/views/create/character/components/Photo.vue";
 import Name from "@/views/create/character/components/Name.vue";
 import Profile from "@/views/create/character/components/Profile.vue";
+import Voice from "@/views/create/character/components/Voice.vue";
 import BackgroundImage from "@/views/create/character/components/BackgroundImage.vue";
 import {ref, useTemplateRef} from "vue";
 import {base64ToFile} from "@/js/utils/base64_to_file.js";
@@ -18,7 +19,7 @@ const nameRef = useTemplateRef('name-ref')
 const profileRef = useTemplateRef('profile-ref')
 const backgroundImageRef = useTemplateRef('backgroundImage-ref')
 const errorMessage =ref('')
-
+const voiceRef = useTemplateRef('voice-ref')
 //对接后端的函数
 async function handleCreate(){
   const photo = photoRef.value.myPhoto //获取四个变量
@@ -41,7 +42,7 @@ async function handleCreate(){
     formData.append('profile',profile)
     formData.append('photo',base64ToFile(photo,'photo.png'))
     formData.append('background_image',base64ToFile(backgroundImage,'bgImage.png')) //key与`/api/create/character/create/`的变量一致
-
+    formData.append('voice', voiceRef.value.myVoice)
     try{
       const res = await api.post('/api/create/character/create/',formData)//对接后端的请求
       const data = res.data //获取返回结果
@@ -70,6 +71,7 @@ async function handleCreate(){
         <h3 class="text-lg font-bold my-4">创建角色</h3>
         <Photo ref="photo-ref"/>
         <Name ref="name-ref"/>
+        <Voice ref="voice-ref" voice="longanyang" />
         <Profile ref="profile-ref"/>
         <BackgroundImage ref="backgroundImage-ref"/>
 

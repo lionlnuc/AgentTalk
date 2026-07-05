@@ -1,4 +1,3 @@
-from django.core.handlers import exception
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +6,14 @@ from rest_framework.permissions import IsAuthenticated
 from web.models.character import Character
 from web.views.utils.photo import remove_old_photo
 
+ALLOWED_VOICES = {
+    'longanyang',
+    'longanhuan_v3',
+    'longhuhu_v3',
+    'longlaotie_v3',
+    'longxiu_v3',
+    'longhao_v3',
+}
 
 class UpdateCharacterView(APIView):
     permission_classes=[IsAuthenticated]
@@ -18,6 +25,11 @@ class UpdateCharacterView(APIView):
             profile = request.data['profile'].strip()[:100000]
             photo = request.FILES.get('photo', None)
             background_image = request.FILES.get('background_image', None)
+            voice = request.data.get('voice', 'longanyang').strip()
+            if voice not in ALLOWED_VOICES:
+                return Response({
+                    'result': '不支持的音色'
+                })
             if not name:
                 return Response({
                     'result': "名字不能为空"
@@ -34,6 +46,7 @@ class UpdateCharacterView(APIView):
                 character.background_image = background_image
             character.name = name
             character.profile = profile
+            character.voice = voice
             character.update_time = now()
             character.save()
             return Response({

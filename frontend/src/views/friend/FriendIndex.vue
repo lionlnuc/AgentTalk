@@ -88,6 +88,7 @@ onBeforeUnmount(() => {
         :character="friend.character"
         :canRemoveFriend="true"
         :friendId="friend.id"
+        :existing-friend="friend"
         @remove="removeFriend"/>
     </div>
     <div ref="sentinel-ref" class="h-2 mt-8"></div>
